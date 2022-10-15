@@ -1,0 +1,111 @@
+type Query {
+  "Lista de las temporadas de Fórmula 1 de 1950 al año actual"
+  seasonsList: [Season!]!
+
+  """
+  Se obtiene información de las carreras seleccionadas por año
+  Tener en cuenta temporadas desde el año 1950
+  """
+  racesByYear(year: String!): [Race!]!
+
+  "Carrera seleccionada por año y por número de carrera"
+  raceSelect(year: String!, round: Int!): Race
+
+  """
+  Lista de los pilotos de F1 de toda la historia
+  Tenemos dos opciones:
+  Se pueden obtener todos los pilotos
+  O también obtenerlos por paginación y limitando el número de resultados
+  """
+  historyDrivers(elements: Int, page: Int): [Driver!]!
+
+  """
+  Se obtiene información de los pilotos seleccionados por año
+  Tener en cuenta temporadas desde el año 1950
+  """
+  driversPerYear(year: String!): [Driver!]!
+
+  """
+  Se obtiene información de los pilotos seleccionados por año y número de carrera
+  Tener en cuenta temporadas desde el año 1950
+  """
+  driversYearAndRound(year: String!, round: Int!): [Driver!]!
+
+  "Información del piloto por ID"
+  driverSelect(id: String!): Driver
+
+  "Clasificación final de los pilotos de una temporada"
+  seasonPilotsRanking(year: String!): [DriverStanding!]!
+
+  "Circuitos históricos"
+  historyCircuits(elements: Int, page: Int): [Circuit!]!
+
+  "Información del circuito por ID"
+  circuitSelect(id: String!): Circuit!
+}
+
+"Información de la temporada"
+type Season {
+  "Año de la temporada"
+  year: String!
+  "Link de wikipedia"
+  url: String!
+  "Link de wikipedia adaptada a los dispositivos móviles"
+  urlMobile: String!
+}
+
+type Race {
+  season: String!
+  round: String!
+  "Link de wikipedia"
+  url: String!
+  "Link de wikipedia adaptada a los dispositivos móviles"
+  urlMobile: String!
+  name: String!
+  circuit: Circuit!
+  date: String!
+  time: String
+}
+
+type Circuit {
+  id: String!
+  url: String!
+  name: String!
+  location: Location!
+  urlMobile: String!
+}
+
+type Location {
+  lat: String!
+  lng: String!
+  locality: String!
+  country: String!
+}
+
+type Driver {
+  id: String!
+  url: String!
+  urlMobile: String!
+  name: String!
+  dateOfBirth: String!
+  nationality: String!
+  code: String
+  permanentNumber: String
+}
+
+type DriverStanding {
+  position:     String!
+  positionText: String!
+  points:       String!
+  wins:         String!
+  driver:       Driver!
+  constructors: [Constructor!]!
+}
+
+type Constructor {
+  id:          String!
+  url:         String!
+  urlMobile:   String!
+  name:        String!
+  nationality: String!
+}
